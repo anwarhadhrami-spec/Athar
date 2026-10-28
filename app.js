@@ -6,7 +6,6 @@
   const TYPES = [{key:"ham"},{key:"qura"}];
   const $ = id => document.getElementById(id);
 
-  // قوائم الآدز لكل نوع
   const ADS = {
     ham: ["العبطة","خلف","عبد","مالك","محمد","قيس","هرموز","هيرين","البال","الخيلانيين","مساك","عامر"],
     qura: ["عبد","مالك","محمد","قيس","هرموز","هيرين","البال","الخيلانيين","مساك","عامر","العبطة","خلف"]
@@ -94,11 +93,48 @@
     $("today-ads").innerHTML=html;
   }
 
-  TYPES.forEach(({key})=>{setForm(key,getConfig(key));$(`save-${key}`).addEventListener("click",()=>saveType(key));render(key);});
+  TYPES.forEach(({key})=>{
+    setForm(key,getConfig(key));
+    $(`save-${key}`).addEventListener("click",()=>saveType(key));
+    render(key);
+  });
   todayAds();
 
-  $("export-data").addEventListener("click",()=>{const blob=new Blob([JSON.stringify({app:"well-share-planner",version:1,data:store},null,2)],{type:"application/json"});const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="well-share-backup.json";a.click();URL.revokeObjectURL(url);$("backup-status").textContent="تم تجهيز ملف النسخة الاحتياطية.";});
+  $("export-data").addEventListener("click",()=>{
+    const blob=new Blob([JSON.stringify({app:"well-share-planner",version:1,data:store},null,2)],{type:"application/json"});
+    const url=URL.createObjectURL(blob),a=document.createElement("a");
+    a.href=url;a.download="well-share-backup.json";a.click();
+    URL.revokeObjectURL(url);
+    $("backup-status").textContent="تم تجهيز ملف النسخة الاحتياطية.";
+  });
 
-  $("import-data").addEventListener("change",async event=>{const file=event.target.files?.[0];if(!file)return;try{const parsed=JSON.parse(await file.text()),data=parsed.data||parsed,next={};for(const {key} of TYPES){if(data[key]&&parseDate(data[key].date)&&Number.isInteger(Number(data[key].time))&&Number(data[key].time)>=0&&Number(data[key].time)<=3)next[key]={date:data[key].date,time:Number(data[key].time)};}if(!Object.keys(next).length)throw Error("invalid");store=next;localStorage.setItem(STORE_KEY,JSON.stringify(store));TYPES.forEach(({key})=>{setForm(key,getConfig(key));render(key);$(`${key}-status`).textContent="تمت استعادة البيانات.";});$("backup-status").textContent="تمت استعادة النسخة الاحتياطية بنجاح.";todayAds();}catch(_){$("backup-status").textContent="تعذر استعادة الملف. اختر نسخة احتياطية صحيحة من التطبيق.";}event.target.value="";});
+  $("import-data").addEventListener("change",async event=>{
+    const file=event.target.files?.[0];
+    if(!file)return;
+    try{
+      const parsed=JSON.parse(await file.text()),data=parsed.data||parsed,next={};
+      for(const {key} of TYPES){
+        if(data[key]&&parseDate(data[key].date)&&Number.isInteger(Number(data[key].time))&&Number(data[key].time)>=0&&Number(data[key].time)<=3){
+          next[key]={date:data[key].date,time:Number(data[key].time)};
+        }
+      }
+      if(!Object.keys(next).length)throw Error("invalid");
+      store=next;
+      localStorage.setItem(STORE_KEY,JSON.stringify(store));
+      TYPES.forEach(({key})=>{
+        setForm(key,getConfig(key));
+        render(key);
+        $(`${key}-status`).textContent="تمت استعادة البيانات.";
+      });
+      $("backup-status").textContent="تمت استعادة النسخة الاحتياطية بنجاح.";
+      todayAds();
+    }catch(_){
+      $("backup-status").textContent="تعذر استعادة الملف. اختر نسخة احتياطية صحيحة من التطبيق.";
+    }
+    event.target.value="";
+  });
 
-  $("clear-data").addEventListener("click",()=>{if(!confirm("هل تريد مسح بيانات النوعين من هذا الجهاز؟ تأكد من تصدير نسخة احتياطية أولًا إن احتجت إليها."))return;store={};localStorage.removeItem(STORE_KEY);TYPES.forEach(({key})=>{setForm(key,null);render(key);$(`${key}-status`).textContent="تم مسح البيانات.";
+  $("clear-data").addEventListener("click",()=>{
+    if(!confirm("هل تريد مسح بيانات النوعين من هذا الجهاز؟ تأكد من تصدير نسخة احتياطية أولًا إن احتجت إليها."))return;
+    store={};
+    local
