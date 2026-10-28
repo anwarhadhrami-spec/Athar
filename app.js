@@ -11,7 +11,77 @@
     { key: "ham" },
     { key: "qura" }
   ];
+const HAM_ADS = [
+  "العبطة",
+  "خلف",
+  "عبد",
+  "مالك",
+  "محمد",
+  "قيس",
+  "هرموز",
+  "هيرين",
+  "البال",
+  "الخيلانيين",
+  "مساك",
+  "عامر"
+];
 
+const QURA_ADS = [
+  "عبد",
+  "مالك",
+  "محمد",
+  "قيس",
+  "هرموز",
+  "هيرين",
+  "البال",
+  "الخيلانيين",
+  "مساك",
+  "عامر",
+  "العبطة",
+  "خلف"
+];
+
+function showTodayAds() {
+
+  const baseDate = new Date(2026, 2, 6);
+
+  const today = new Date();
+
+  const currentDay = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate()
+  );
+
+  const diffDays = Math.floor(
+    (currentDay - baseDate) / 86400000
+  );
+
+  const index = ((diffDays % 12) + 12) % 12;
+
+  const hamAd = HAM_ADS[index];
+  const quraAd = QURA_ADS[index];
+
+  $("today-ads").innerHTML = `
+    <div class="next-box">
+
+      <p class="next-date">
+        اليوم: ${formatDate(currentDay)}
+      </p>
+
+      <p>
+        <strong>الحمام والحديث:</strong>
+        ${hamAd}
+      </p>
+
+      <p>
+        <strong>القري:</strong>
+        ${quraAd}
+      </p>
+
+    </div>
+  `;
+}
   const $ = (id) => document.getElementById(id);
 
   function localDateString(date) {
@@ -355,7 +425,7 @@
         "تعذر الحفظ. تحقق من إعدادات المتصفح.";
     }
   }
-
+showTodayAds();
   TYPES.forEach(({ key }) => {
     setForm(
       key,
