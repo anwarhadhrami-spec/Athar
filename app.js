@@ -74,16 +74,31 @@
     const date=$(`${key}-date`).value,time=Number($(`${key}-time`).value);
     if(!parseDate(date)){$(`${key}-status`).textContent="يرجى إدخال تاريخ صحيح.";return;}
     store[key]={date,time};
-    try{localStorage.setItem(STORE_KEY,JSON.stringify(store));$(`${key}-status`).textContent="تم حفظ البيانات على هذا الجهاز.";render(key);}catch(_){$(`${key}-status`).textContent="تعذر الحفظ. تحقق من إعدادات المتصفح.";}
+    try{localStorage.setItem(STORE_KEY,JSON.stringify(store));$(`${key}-status`).textContent="تم حفظ البيانات على هذا الجهاز.";render(key);todayAds();}catch(_){$(`${key}-status`).textContent="تعذر الحفظ. تحقق من إعدادات المتصفح.";}
+  }
+
+  function todayAds(){
+    const today=new Date();
+    const todayStr=formatDate(today);
+    let html=`<span class="eyebrow">آد اليوم</span><p class="next-date">${todayStr}</p>`;
+    TYPES.forEach(({key})=>{
+      const config=getConfig(key);
+      if(config){
+        const diff=daysBetween(parseDate(config.date),today);
+        const n=Math.max(0,Math.floor(diff/CYCLE_DAYS));
+        const adList=ADS[key]||[];
+        const ad=adList[n % adList.length];
+        html+=`<p>${key==="ham"?"الحمام والحديث":"القري"}: ${escapeHtml(ad)}</p>`;
+      }
+    });
+    $("today-ads").innerHTML=html;
   }
 
   TYPES.forEach(({key})=>{setForm(key,getConfig(key));$(`save-${key}`).addEventListener("click",()=>saveType(key));render(key);});
+  todayAds();
 
   $("export-data").addEventListener("click",()=>{const blob=new Blob([JSON.stringify({app:"well-share-planner",version:1,data:store},null,2)],{type:"application/json"});const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="well-share-backup.json";a.click();URL.revokeObjectURL(url);$("backup-status").textContent="تم تجهيز ملف النسخة الاحتياطية.";});
 
-  $("import-data").addEventListener("change",async event=>{const file=event.target.files?.[0];if(!file)return;try{const parsed=JSON.parse(await file.text()),data=parsed.data||parsed,next={};for(const {key} of TYPES){if(data[key]&&parseDate(data[key].date)&&Number.isInteger(Number(data[key].time))&&Number(data[key].time)>=0&&Number(data[key].time)<=3)next[key]={date:data[key].date,time:Number(data[key].time)};}if(!Object.keys(next).length)throw Error("invalid");store=next;localStorage.setItem(STORE_KEY,JSON.stringify(store));TYPES.forEach(({key})=>{setForm(key,getConfig(key));render(key);$(`${key}-status`).textContent="تمت استعادة البيانات.";});$("backup-status").textContent="تمت استعادة النسخة الاحتياطية بنجاح.";}catch(_){$("backup-status").textContent="تعذر استعادة الملف. اختر نسخة احتياطية صحيحة من التطبيق.";}event.target.value="";});
+  $("import-data").addEventListener("change",async event=>{const file=event.target.files?.[0];if(!file)return;try{const parsed=JSON.parse(await file.text()),data=parsed.data||parsed,next={};for(const {key} of TYPES){if(data[key]&&parseDate(data[key].date)&&Number.isInteger(Number(data[key].time))&&Number(data[key].time)>=0&&Number(data[key].time)<=3)next[key]={date:data[key].date,time:Number(data[key].time)};}if(!Object.keys(next).length)throw Error("invalid");store=next;localStorage.setItem(STORE_KEY,JSON.stringify(store));TYPES.forEach(({key})=>{setForm(key,getConfig(key));render(key);$(`${key}-status`).textContent="تمت استعادة البيانات.";});$("backup-status").textContent="تمت استعادة النسخة الاحتياطية بنجاح.";todayAds();}catch(_){$("backup-status").textContent="تعذر استعادة الملف. اختر نسخة احتياطية صحيحة من التطبيق.";}event.target.value="";});
 
-  $("clear-data").addEventListener("click",()=>{if(!confirm("هل تريد مسح بيانات النوعين من هذا الجهاز؟ تأكد من تصدير نسخة احتياطية أولًا إن احتجت إليها."))return;store={};localStorage.removeItem(STORE_KEY);TYPES.forEach(({key})=>{setForm(key,null);render(key);$(`${key}-status`).textContent="تم مسح البيانات.";});$("backup-status").textContent="";});
-
-  if("serviceWorker" in navigator&&location.protocol.startsWith("http"))window.addEventListener("load",()=>navigator.serviceWorker.register("./service-worker.js").catch(()=>{}));
-})();
+  $("clear-data").addEventListener("click",()=>{if(!confirm("هل تريد مسح بيانات النوعين من هذا الجهاز؟ تأكد من تصدير نسخة احتياطية أولًا إن احتجت إليها."))return;store={};localStorage.removeItem(STORE_KEY);TYPES.forEach(({key})=>{setForm(key,null);render(key);$(`${key}-status`).textContent="تم مسح البيانات.";
