@@ -62,25 +62,43 @@ function showTodayAds() {
   const hamAd = HAM_ADS[index];
   const quraAd = QURA_ADS[index];
 
-  $("today-ads").innerHTML = `
-    <div class="next-box">
+  const WATER_ADS = [
+  "الخيلانيين",
+  "مالك",
+  "محمد"
+];
 
-      <p class="next-date">
-        اليوم: ${formatDate(currentDay)}
-      </p>
+const hasWater =
+  WATER_ADS.includes(hamAd);
 
-      <p>
-        <strong>الحمام والحديث:</strong>
-        ${hamAd}
-      </p>
+ $("today-ads").innerHTML = `
+  <div class="next-box">
 
-      <p>
-        <strong>القري:</strong>
-        ${quraAd}
-      </p>
+    <p class="next-date">
+      اليوم: ${formatDate(currentDay)}
+    </p>
 
-    </div>
-  `;
+    <p>
+      <strong>الحمام والحديث:</strong>
+      ${hamAd}
+    </p>
+
+    <p>
+      <strong>القري:</strong>
+      ${quraAd}
+    </p>
+
+    <p>
+      <strong>حصة الماء:</strong>
+      ${
+        hasWater
+          ? "نعم"
+          : "لا"
+      }
+    </p>
+
+  </div>
+`;
 }
   const $ = (id) => document.getElementById(id);
 
