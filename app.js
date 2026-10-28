@@ -12,8 +12,12 @@
     qura: ["عبد","مالك","محمد","قيس","هرموز","هيرين","البال","الخيلانيين","مساك","عامر","العبطة","خلف"]
   };
 
-  function localDateString(date){const y=date.getFullYear(),m=String(date.getMonth()+1).padStart(2,"0"),d=String(date.getDate()).padStart(2,"0");return `${y}-${m}-${d}`;}
-  function parseDate(value){if(!value||!/^\d{4}-\d{2}-\d{2}$/.test(value))return null;const [y,m,d]=value.split("-").map(Number);const date=new Date(y,m-1,d,12);return date.getFullYear()===y&&date.getMonth()===m-1&&date.getDate()===d?date:null;}
+  function parseDate(value){
+    if(!value||!/^\d{4}-\d{2}-\d{2}$/.test(value))return null;
+    const [y,m,d]=value.split("-").map(Number);
+    const date=new Date(y,m-1,d,12);
+    return date.getFullYear()===y&&date.getMonth()===m-1&&date.getDate()===d?date:null;
+  }
   function addDays(date,days){const copy=new Date(date.getFullYear(),date.getMonth(),date.getDate(),12);copy.setDate(copy.getDate()+days);return copy;}
   function daysBetween(a,b){return Math.round((Date.UTC(b.getFullYear(),b.getMonth(),b.getDate())-Date.UTC(a.getFullYear(),a.getMonth(),a.getDate()))/86400000);}
   function formatDate(date){return new Intl.DateTimeFormat("ar-OM",{weekday:"long",year:"numeric",month:"long",day:"numeric"}).format(date);}
@@ -55,7 +59,7 @@
       return;
     }
     const next=nextOccurrence(config,key),today=new Date(),todayNoon=new Date(today.getFullYear(),today.getMonth(),today.getDate(),12),remaining=daysBetween(todayNoon,next.date);
-    nextEl.innerHTML=`<span class="eyebrow">الحصة القادمة</span><p class="next-date">${escapeHtml(formatDate(next.date))}</p><span class="next-time">${TIMES[next.time]}</span><p class="countdown">${remaining===0?"موعد الحصة اليوم":`باقي ${remaining} يومًا على موعد الحصة`}</p>`;
+    nextEl.innerHTML=`<span class="eyebrow">الحصة القادمة</span><p class="next-date">${escapeHtml(formatDate(next.date))}</p><span class="next-time">${TIMES[next.time]}</span><p class="countdown">${remaining===0?"موعد الحصة اليوم ("+escapeHtml(next.ad)+")":`باقي ${remaining} يومًا على موعد الحصة (${escapeHtml(next.ad)})`}</p>`;
     const rows=[];
     for(let i=0;i<12;i++){
       const item=occurrence(config,next.n+i,key);
