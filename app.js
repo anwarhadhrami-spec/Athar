@@ -1,6 +1,7 @@
 (() => {
   "use strict";
-  const TIMES = ["صبح", "ظهر", "عصر", "عشاء"];
+  const TIMES1 = ["صنهار", "الغدو", "نص الليل", "الشروق"];
+  const TIMES2 = ["نص الليل" , "صنهار"]
   const CYCLE_DAYS = 12;
   const STORE_KEY = "wellSharePlanner.v1";
   const TYPES = [{key:"ham"},{key:"qura"}];
