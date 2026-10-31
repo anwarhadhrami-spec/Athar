@@ -41,21 +41,15 @@
 
   const WATER_TIMES = [
     "صنهار",
-    "الغدو",
+    "الغروب",
     "نص الليل",
     "الشروق"
   ];
 
   const BASE_DATE = new Date(2026, 2, 6);
 
-  function formatDate(date) {
-    return new Intl.DateTimeFormat("ar-OM", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric"
-    }).format(date);
-  }
+  const WATER_REFERENCE_DATE =
+    new Date(2026, 9, 29); // 2026-10-29
 
   function dateOnly(date) {
     return new Date(
@@ -73,6 +67,15 @@
     return `${y}-${m}-${d}`;
   }
 
+  function formatDate(date) {
+    return new Intl.DateTimeFormat("ar-OM", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    }).format(date);
+  }
+
   function getCycleIndex(date) {
 
     const diffDays = Math.floor(
@@ -82,17 +85,67 @@
     return ((diffDays % 12) + 12) % 12;
   }
 
+  function getWaterInfo(date) {
+
+    const targetDate = dateOnly(date);
+
+    const ad =
+      HAM_ADS[
+        getCycleIndex(targetDate)
+      ];
+
+    if (!WATER_ADS.includes(ad)) {
+      return {
+        hasWater: false,
+        time: "-"
+      };
+    }
+
+    let counter = 0;
+
+    for (
+      let d = new Date(WATER_REFERENCE_DATE);
+      d < targetDate;
+      d.setDate(d.getDate() + 1)
+    ) {
+
+      const idx = getCycleIndex(d);
+
+      const currentAd =
+        HAM_ADS[idx];
+
+      if (
+        WATER_ADS.includes(currentAd)
+      ) {
+        counter++;
+      }
+    }
+
+    return {
+      hasWater: true,
+      time:
+        WATER_TIMES[
+          counter %
+          WATER_TIMES.length
+        ]
+    };
+  }
+
   function showTodayAds() {
 
-    const today = new Date();
+    const today = dateOnly(new Date());
 
-    const idx = getCycleIndex(today);
+    const idx =
+      getCycleIndex(today);
 
-    const hamAd = HAM_ADS[idx];
-    const quraAd = QURA_ADS[idx];
+    const hamAd =
+      HAM_ADS[idx];
 
-    const hasWater =
-      WATER_ADS.includes(hamAd);
+    const quraAd =
+      QURA_ADS[idx];
+
+    const water =
+      getWaterInfo(today);
 
     $("today-ads").innerHTML = `
       <div class="next-box">
@@ -102,19 +155,38 @@
         </p>
 
         <p>
-          <strong>الحمام والحديث:</strong>
+          <strong>
+            الحمام والحديث:
+          </strong>
           ${hamAd}
         </p>
 
         <p>
-          <strong>القري:</strong>
+          <strong>
+            القري:
+          </strong>
           ${quraAd}
         </p>
 
         <p>
-          <strong>حصة الماء:</strong>
-          ${hasWater ? "نعم" : "لا"}
+          <strong>
+            حصة الماء:
+          </strong>
+          ${water.hasWater ? "نعم" : "لا"}
         </p>
+
+        ${
+          water.hasWater
+            ? `
+            <p>
+              <strong>
+                التقليبة:
+              </strong>
+              ${water.time}
+            </p>
+            `
+            : ""
+        }
 
       </div>
     `;
@@ -124,46 +196,31 @@
 
     const rows = [];
 
-    let waterCounter = 0;
+    const today =
+      dateOnly(new Date());
 
-    const startDate = new Date();
+    for (let i = 0; i < 90; i++) {
 
-    for (let i = 0; i < 30; i++) {
-
-      const date = new Date(startDate);
+      const date = new Date(today);
 
       date.setDate(
-        startDate.getDate() + i
+        today.getDate() + i
       );
 
-      const idx =
-        getCycleIndex(date);
-
       const ad =
-        HAM_ADS[idx];
+        HAM_ADS[
+          getCycleIndex(date)
+        ];
 
-      let water = "لا";
-      let time = "-";
-
-      if (WATER_ADS.includes(ad)) {
-
-        water = "نعم";
-
-        time =
-          WATER_TIMES[
-            waterCounter %
-            WATER_TIMES.length
-          ];
-
-        waterCounter++;
-      }
+      const water =
+        getWaterInfo(date);
 
       rows.push(`
         <tr>
           <td>${localDateString(date)}</td>
           <td>${ad}</td>
-          <td>${water}</td>
-          <td>${time}</td>
+          <td>${water.hasWater ? "نعم" : "لا"}</td>
+          <td>${water.time}</td>
         </tr>
       `);
     }
@@ -174,7 +231,7 @@
         <thead>
           <tr>
             <th>التاريخ</th>
-            <th>الآد</th>
+            <th>آد الحمام والحديث</th>
             <th>حصة الماء</th>
             <th>التقليبة</th>
           </tr>
