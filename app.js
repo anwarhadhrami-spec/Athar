@@ -46,9 +46,6 @@
     "نص الليل"
   ];
 
-  /*
-   * التواريخ المرجعية المؤكدة
-   */
   const WATER_REFERENCE = {
     "الخيلانيين": {
       date: "2026-10-29",
@@ -96,18 +93,13 @@
   }
 
   function getCycleIndex(date) {
-
     const diffDays = Math.floor(
-      (dateOnly(date) - BASE_DATE) /
-      86400000
+      (dateOnly(date) - BASE_DATE) / 86400000
     );
 
     return ((diffDays % 12) + 12) % 12;
   }
 
-  /*
-   * حساب التقليبة لكل آد
-   */
   function getWaterTime(adName, targetDate) {
 
     const ref = WATER_REFERENCE[adName];
@@ -118,8 +110,7 @@
 
     let occurrences = 0;
 
-    const startDate =
-      new Date(ref.date);
+    const startDate = new Date(ref.date);
 
     for (
       let d = new Date(startDate);
@@ -147,19 +138,14 @@
 
     const today = new Date();
 
-    const idx =
-      getCycleIndex(today);
+    const idx = getCycleIndex(today);
 
-    const hamAd =
-      HAM_ADS[idx];
+    const hamAd = HAM_ADS[idx];
 
-    const quraAd =
-      QURA_ADS[idx];
+    const quraAd = QURA_ADS[idx];
 
     const hasWater =
-      WATER_ADS.includes(
-        hamAd
-      );
+      WATER_ADS.includes(hamAd);
 
     const waterTime =
       hasWater
@@ -193,13 +179,13 @@
 
         ${
           hasWater
-          ? `
-          <p>
-            <strong>التقليبة:</strong>
-            ${waterTime}
-          </p>
-          `
-          : ""
+            ? `
+            <p class="today-turn">
+              <strong>التقليبة:</strong>
+              ${waterTime}
+            </p>
+            `
+            : ""
         }
 
       </div>
@@ -210,21 +196,14 @@
 
     const rows = [];
 
-    const startDate =
-      new Date();
+    const startDate = new Date();
 
-    for (
-      let i = 0;
-      i < 90;
-      i++
-    ) {
+    for (let i = 0; i < 90; i++) {
 
-      const date =
-        new Date(startDate);
+      const date = new Date(startDate);
 
       date.setDate(
-        startDate.getDate() +
-        i
+        startDate.getDate() + i
       );
 
       const idx =
@@ -236,9 +215,7 @@
       let water = "لا";
       let time = "-";
 
-      if (
-        WATER_ADS.includes(ad)
-      ) {
+      if (WATER_ADS.includes(ad)) {
 
         water = "نعم";
 
