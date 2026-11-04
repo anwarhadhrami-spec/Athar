@@ -251,29 +251,29 @@
     ];
   }
 
-  function formatTurnTime(time) {
+function formatTurnTime(time) {
 
-    switch (time) {
+  switch (time) {
 
-      case "صنهار":
-        return "☀️ صنهار";
+    case "صنهار":
+      return "☀️ صنهار (11:30 ص)";
 
-      case "الشروق":
-        return "🌅 الشروق (+1 يوم)";
+    case "الشروق":
+      return "🌅 الشروق (5:30 ص اليوم التالي)";
 
-      case "الغروب":
-        return "🌇 الغروب";
+    case "الغروب":
+      return "🌇 الغروب (5:30 م)";
 
-      case "نص الليل":
-        return "🌙 نص الليل";
+    case "نص الليل":
+      return "🌙 نص الليل (11:00 م)";
 
-      case "الغدو":
-        return "🌤️ الغدو";
+    case "الغدو":
+      return "🌤️ الغدو (5:30 ص)";
 
-      default:
-        return time;
-    }
+    default:
+      return time;
   }
+}
 
   function showTodayAds() {
 
