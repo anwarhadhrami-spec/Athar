@@ -1,18 +1,24 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#176b57">
   <meta name="description" content="حساب مواعيد فلج الحمام والحديث والقري">
+
   <title>مواعيد الأفلاج</title>
+
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
 </head>
+
 <body>
+
 <header class="hero">
   <div class="mark" aria-hidden="true">💧</div>
+
   <div>
     <h1>مواعيد الأفلاج</h1>
     <p>حساب تلقائي للمواعيد القادمة كل 12 يومًا</p>
@@ -20,153 +26,149 @@
 </header>
 
 <main>
-<section class="notice">
 
-  <h2>معلومات المشاركات</h2>
+  <!-- معلومات المشاركات -->
 
-  <div class="notice-table-wrap">
+  <section class="notice">
 
-<table class="notice-table">
+    <h2>معلومات المشاركات</h2>
 
-<thead>
-<tr>
-  <th>مشاركتنا في آد</th>
-  <th>عدد الآثار</th>
-  <th>يسقي</th>
-  <th>يداورنا</th>
-</tr>
-</thead>
+    <div class="notice-table-wrap">
 
-<tbody>
+      <table class="notice-table">
 
-<tr>
-  <td>الخيلانيين</td>
-  <td>حمام 18 أثر</td>
-  <td>الخبيبة</td>
-  <td>علي بن خلفان</td>
-</tr>
+        <thead>
+          <tr>
+            <th>مشاركتنا في آد</th>
+            <th>عدد الآثار</th>
+            <th>يسقي</th>
+            <th>يداورنا</th>
+          </tr>
+        </thead>
 
-<tr>
-  <td>-</td>
-  <td>حديث 24 أثر (ردة كاملة)</td>
-  <td>الشريجة العودة والغريفة</td>
-  <td>-</td>
-</tr>
+        <tbody>
 
-<tr>
-  <td>مالك</td>
-  <td>حمام 6 آثار</td>
-  <td>بستان صبيان</td>
-  <td>سالم بن سليمان</td>
-</tr>
+          <tr>
+            <td>الخيلانيين</td>
+            <td>حمام 18 أثر</td>
+            <td>الخبيبة</td>
+            <td>علي بن خلفان</td>
+          </tr>
 
-<tr>
-  <td>-</td>
-  <td>حديث 24 أثر</td>
-  <td>الشريجة العودة والغريفة</td>
-  <td>-</td>
-</tr>
+          <tr>
+            <td>-</td>
+            <td>حديث 24 أثر (ردة كاملة)</td>
+            <td>الشريجة العودة والغريفة</td>
+            <td>-</td>
+          </tr>
 
-<tr>
-  <td>محمد</td>
-  <td>الحمام 18 أثر</td>
-  <td>الخبيبة</td>
-  <td>سالم بن خصيب</td>
-</tr>
+          <tr>
+            <td>مالك</td>
+            <td>حمام 6 آثار</td>
+            <td>بستان صبيان</td>
+            <td>سالم بن سليمان</td>
+          </tr>
 
-<tr>
-  <td>هرموز</td>
-  <td>القري 6 آثار</td>
-  <td>حوض ضاوي</td>
-  <td>-</td>
-</tr>
+          <tr>
+            <td>-</td>
+            <td>حديث 24 أثر</td>
+            <td>الشريجة العودة والغريفة</td>
+            <td>-</td>
+          </tr>
 
-</tbody>
+          <tr>
+            <td>محمد</td>
+            <td>الحمام 18 أثر</td>
+            <td>الخبيبة</td>
+            <td>سالم بن خصيب</td>
+          </tr>
 
-</table>
+          <tr>
+            <td>هرموز</td>
+            <td>القري 6 آثار</td>
+            <td>حوض ضاوي</td>
+            <td>-</td>
+          </tr>
 
-</div>
+        </tbody>
 
-</section>
+      </table>
+
+    </div>
+
+  </section>
+
   <!-- آد اليوم -->
+
   <section class="share-card">
+
     <div class="section-heading">
       <h2>آد اليوم</h2>
     </div>
-    <div id="today-ads">
-     
-    </div>
+
+    <div id="today-ads"></div>
+
   </section>
 
-  <!-- النوع الأول -->
+  <!-- آد الحمام والحديث -->
+
   <section class="share-card">
+
     <div class="section-heading">
+
       <div>
         <span class="eyebrow">النوع الأول</span>
         <h2>آد الحمام والحديث</h2>
       </div>
-      <span class="water-icon" aria-hidden="true">◉</span>
-    </div>
-   <div class="schedule-head">
-  <h3>جدول الآد وحصص الماء</h3>
-  <span>عرض تلقائي</span>
-</div>
 
-<div class="table-wrap" id="ham-schedule"></div>
+      <span class="water-icon" aria-hidden="true">◉</span>
+
+    </div>
+
+    <div class="schedule-head">
+      <h3>جدول الآد وحصص الماء</h3>
+      <span>عرض تلقائي</span>
+    </div>
+
+    <div class="table-wrap" id="ham-schedule"></div>
+
   </section>
 
-  <!-- النوع الثاني -->
+  <!-- آد القري -->
+
   <section class="share-card">
+
     <div class="section-heading">
+
       <div>
         <span class="eyebrow">النوع الثاني</span>
         <h2>آد القري</h2>
       </div>
+
       <span class="water-icon" aria-hidden="true">◉</span>
+
     </div>
-    <div class="fields">
-      <label>تاريخ الآد المرجعي
-        <input id="qura-date" type="date">
-      </label>
-      <label>التقليبة
-        <select id="qura-time">
-          <option value="0">صنهار</option>
-          <option value="1">نص الليل</option>
-        </select>
-      </label>
-    </div>
-    <button class="primary" id="save-qura">حفظ بيانات هذا النوع</button>
-    <p class="status" id="qura-status" role="status"></p>
-    <div class="next-box" id="qura-next" aria-live="polite">
-      <span class="eyebrow">الحصة القادمة</span>
-      <p class="empty">أدخل التاريخ والوقت ثم اضغط حفظ.</p>
-    </div>
+
+    <div id="qura-next"></div>
+
     <div class="schedule-head">
-      <h3>المواعيد القادمة</h3>
-      <span>12 موعدًا</span>
+      <h3>جدول الآد وحصص الماء</h3>
+      <span>عرض تلقائي</span>
     </div>
+
     <div class="table-wrap" id="qura-schedule"></div>
+
   </section>
 
-  <!-- أدوات النسخ الاحتياطي -->
-  <section class="tools-card">
-    <h2>النسخ الاحتياطي</h2>
-    <p>احفظ نسخة من بياناتك لاستعادتها إذا حذفت بيانات المتصفح أو نقلت التطبيق إلى جهاز آخر.</p>
-    <div class="tool-buttons">
-      <button class="secondary" id="export-data">تصدير نسخة احتياطية</button>
-      <label class="secondary file-button">استعادة نسخة
-        <input id="import-data" type="file" accept="application/json,.json">
-      </label>
-    </div>
-    <p id="backup-status" class="status" role="status"></p>
-    <button class="text-button" id="clear-data">مسح جميع البيانات المحفوظة</button>
-  </section>
 </main>
 
 <footer>
-  <p>تُحفظ البيانات على هذا الجهاز في المتصفح. راجع تاريخ الحصة المرجعية للتأكد من صحته.</p>
+  <p>
+    تُحتسب المواعيد تلقائياً حسب الدورة الحالية وبيانات الحصص المرجعية.
+  </p>
 </footer>
 
 <script src="app.js"></script>
+
 </body>
 </html>
