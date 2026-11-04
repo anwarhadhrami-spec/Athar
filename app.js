@@ -47,6 +47,7 @@
   ];
 
   const WATER_REFERENCE = {
+
     "الخيلانيين": {
       date: "2026-10-29",
       timeIndex: 0
@@ -61,6 +62,7 @@
       date: "2026-11-05",
       timeIndex: 0
     }
+
   };
 
   const QURA_WATER_ADS = [
@@ -73,24 +75,32 @@
   ];
 
   const QURA_REFERENCE = {
+
     "هرموز": {
       date: "2026-11-05",
       timeIndex: 0
     }
+
   };
 
-  const BASE_DATE = new Date(2026, 2, 6);
+  const BASE_DATE =
+    new Date(2026, 2, 6);
 
   function formatDate(date) {
-    return new Intl.DateTimeFormat("ar-OM", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric"
-    }).format(date);
+
+    return new Intl.DateTimeFormat(
+      "ar-OM",
+      {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      }
+    ).format(date);
   }
 
   function dateOnly(date) {
+
     return new Date(
       date.getFullYear(),
       date.getMonth(),
@@ -99,7 +109,9 @@
   }
 
   function localDateString(date) {
-    const y = date.getFullYear();
+
+    const y =
+      date.getFullYear();
 
     const m = String(
       date.getMonth() + 1
@@ -115,14 +127,19 @@
   function getCycleIndex(date) {
 
     const diffDays = Math.floor(
+
       (
         dateOnly(date) -
         BASE_DATE
+
       ) / 86400000
+
     );
 
     return (
+
       (diffDays % 12) + 12
+
     ) % 12;
   }
 
@@ -144,11 +161,16 @@
       new Date(ref.date);
 
     for (
-      let d = new Date(startDate);
+
+      let d =
+        new Date(startDate);
+
       d <= targetDate;
+
       d.setDate(
         d.getDate() + 1
       )
+
     ) {
 
       const idx =
@@ -157,16 +179,21 @@
       if (
         HAM_ADS[idx] === adName
       ) {
+
         occurrences++;
+
       }
+
     }
 
     return WATER_TIMES[
+
       (
         ref.timeIndex +
         occurrences -
         1
       ) % WATER_TIMES.length
+
     ];
   }
 
@@ -188,11 +215,16 @@
       new Date(ref.date);
 
     for (
-      let d = new Date(startDate);
+
+      let d =
+        new Date(startDate);
+
       d <= targetDate;
+
       d.setDate(
         d.getDate() + 1
       )
+
     ) {
 
       const idx =
@@ -201,18 +233,48 @@
       if (
         QURA_ADS[idx] === adName
       ) {
+
         occurrences++;
+
       }
+
     }
 
     return QURA_TIMES[
+
       (
         ref.timeIndex +
         occurrences -
         1
       ) % QURA_TIMES.length
+
     ];
   }
+
+  function formatTurnTime(time) {
+
+    switch (time) {
+
+      case "صنهار":
+        return "☀️ صنهار";
+
+      case "الشروق":
+        return "🌅 الشروق (+1 يوم)";
+
+      case "الغروب":
+        return "🌇 الغروب";
+
+      case "نص الليل":
+        return "🌙 نص الليل";
+
+      case "الغدو":
+        return "🌤️ الغدو";
+
+      default:
+        return time;
+    }
+  }
+
   function showTodayAds() {
 
     const today =
@@ -263,7 +325,7 @@
             ? `
             <p class="today-turn">
               <strong>التقليبة:</strong>
-              ${waterTime}
+              ${formatTurnTime(waterTime)}
             </p>
             `
             : ""
@@ -320,7 +382,7 @@
           <td>${localDateString(date)}</td>
           <td>${ad}</td>
           <td>${water}</td>
-          <td>${time}</td>
+          <td>${formatTurnTime(time)}</td>
         </tr>
       `);
     }
@@ -395,7 +457,7 @@
             ? `
             <p class="today-turn">
               <strong>التقليبة:</strong>
-              ${time}
+              ${formatTurnTime(time)}
             </p>
             `
             : ""
@@ -454,7 +516,7 @@
           <td>${localDateString(date)}</td>
           <td>${ad}</td>
           <td>${water}</td>
-          <td>${time}</td>
+          <td>${formatTurnTime(time)}</td>
         </tr>
       `);
     }
@@ -480,9 +542,11 @@
   }
 
   showTodayAds();
+
   renderHamTable();
 
   showQuraToday();
+
   renderQuraTable();
 
 })();
