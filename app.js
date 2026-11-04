@@ -255,12 +255,12 @@
           ${hamAd}
         </p>
 
-        <p>
-          <strong>
-            القري:
-          </strong>
-          ${quraAd}
-        </p>
+       // <p>
+        //  <strong>
+         //   القري:
+       //   </strong>
+      //    ${quraAd}
+     //   </p>
 
         <p>
           <strong>
