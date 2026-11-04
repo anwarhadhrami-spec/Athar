@@ -54,3 +54,19 @@
   font-size:1.15rem;
 }
 
+.today-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.today-grid .next-box {
+  margin-top: 0;
+  height: 100%;
+}
+
+@media (max-width: 700px) {
+  .today-grid {
+    grid-template-columns: 1fr;
+  }
+}
