@@ -255,13 +255,6 @@
           ${hamAd}
         </p>
 
-       // <p>
-        //  <strong>
-         //   القري:
-       //   </strong>
-      //    ${quraAd}
-     //   </p>
-
         <p>
           <strong>
             حصة الماء:
