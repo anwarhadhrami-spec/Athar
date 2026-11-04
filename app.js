@@ -268,7 +268,7 @@ function formatTurnTime(time) {
       return "🌙 نص الليل (11:00 م)";
 
     case "الغدو":
-      return "🌤️ الغدو (5:30 ص)";
+      return "🌤️ الغدو (8:00 م)";
 
     default:
       return time;
