@@ -213,7 +213,6 @@
       ) % QURA_TIMES.length
     ];
   }
-
   function showTodayAds() {
 
     const today =
@@ -224,9 +223,6 @@
 
     const hamAd =
       HAM_ADS[idx];
-
-    const quraAd =
-      QURA_ADS[idx];
 
     const hasWater =
       WATER_ADS.includes(
@@ -244,21 +240,21 @@
     $("today-ads").innerHTML = `
       <div class="next-box">
 
+        <p>
+          <strong>الحمام والحديث</strong>
+        </p>
+
         <p class="next-date">
           ${formatDate(today)}
         </p>
 
         <p>
-          <strong>
-            الحمام والحديث:
-          </strong>
+          <strong>الآد:</strong>
           ${hamAd}
         </p>
 
         <p>
-          <strong>
-            حصة الماء:
-          </strong>
+          <strong>حصة الماء:</strong>
           ${hasWater ? "نعم" : "لا"}
         </p>
 
@@ -266,9 +262,7 @@
           hasWater
             ? `
             <p class="today-turn">
-              <strong>
-                التقليبة:
-              </strong>
+              <strong>التقليبة:</strong>
               ${waterTime}
             </p>
             `
@@ -377,6 +371,10 @@
 
     $("qura-next").innerHTML = `
       <div class="next-box">
+
+        <p>
+          <strong>القري</strong>
+        </p>
 
         <p class="next-date">
           ${formatDate(today)}
