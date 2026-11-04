@@ -49,17 +49,33 @@
   const WATER_REFERENCE = {
     "الخيلانيين": {
       date: "2026-10-29",
-      timeIndex: 0 // صنهار
+      timeIndex: 0
     },
 
     "مالك": {
       date: "2026-11-04",
-      timeIndex: 1 // الشروق
+      timeIndex: 1
     },
 
     "محمد": {
       date: "2026-11-05",
-      timeIndex: 0 // صنهار
+      timeIndex: 0
+    }
+  };
+
+  const QURA_WATER_ADS = [
+    "هرموز"
+  ];
+
+  const QURA_TIMES = [
+    "صنهار",
+    "الغدو"
+  ];
+
+  const QURA_REFERENCE = {
+    "هرموز": {
+      date: "2026-11-05",
+      timeIndex: 0
     }
   };
 
@@ -84,25 +100,39 @@
 
   function localDateString(date) {
     const y = date.getFullYear();
-    const m = String(date.getMonth() + 1)
-      .padStart(2, "0");
-    const d = String(date.getDate())
-      .padStart(2, "0");
+
+    const m = String(
+      date.getMonth() + 1
+    ).padStart(2, "0");
+
+    const d = String(
+      date.getDate()
+    ).padStart(2, "0");
 
     return `${y}-${m}-${d}`;
   }
 
   function getCycleIndex(date) {
+
     const diffDays = Math.floor(
-      (dateOnly(date) - BASE_DATE) / 86400000
+      (
+        dateOnly(date) -
+        BASE_DATE
+      ) / 86400000
     );
 
-    return ((diffDays % 12) + 12) % 12;
+    return (
+      (diffDays % 12) + 12
+    ) % 12;
   }
 
-  function getWaterTime(adName, targetDate) {
+  function getWaterTime(
+    adName,
+    targetDate
+  ) {
 
-    const ref = WATER_REFERENCE[adName];
+    const ref =
+      WATER_REFERENCE[adName];
 
     if (!ref) {
       return "-";
@@ -110,17 +140,23 @@
 
     let occurrences = 0;
 
-    const startDate = new Date(ref.date);
+    const startDate =
+      new Date(ref.date);
 
     for (
       let d = new Date(startDate);
       d <= targetDate;
-      d.setDate(d.getDate() + 1)
+      d.setDate(
+        d.getDate() + 1
+      )
     ) {
 
-      const idx = getCycleIndex(d);
+      const idx =
+        getCycleIndex(d);
 
-      if (HAM_ADS[idx] === adName) {
+      if (
+        HAM_ADS[idx] === adName
+      ) {
         occurrences++;
       }
     }
@@ -134,18 +170,68 @@
     ];
   }
 
+  function getQuraTime(
+    adName,
+    targetDate
+  ) {
+
+    const ref =
+      QURA_REFERENCE[adName];
+
+    if (!ref) {
+      return "-";
+    }
+
+    let occurrences = 0;
+
+    const startDate =
+      new Date(ref.date);
+
+    for (
+      let d = new Date(startDate);
+      d <= targetDate;
+      d.setDate(
+        d.getDate() + 1
+      )
+    ) {
+
+      const idx =
+        getCycleIndex(d);
+
+      if (
+        QURA_ADS[idx] === adName
+      ) {
+        occurrences++;
+      }
+    }
+
+    return QURA_TIMES[
+      (
+        ref.timeIndex +
+        occurrences -
+        1
+      ) % QURA_TIMES.length
+    ];
+  }
+
   function showTodayAds() {
 
-    const today = new Date();
+    const today =
+      new Date();
 
-    const idx = getCycleIndex(today);
+    const idx =
+      getCycleIndex(today);
 
-    const hamAd = HAM_ADS[idx];
+    const hamAd =
+      HAM_ADS[idx];
 
-    const quraAd = QURA_ADS[idx];
+    const quraAd =
+      QURA_ADS[idx];
 
     const hasWater =
-      WATER_ADS.includes(hamAd);
+      WATER_ADS.includes(
+        hamAd
+      );
 
     const waterTime =
       hasWater
@@ -163,17 +249,23 @@
         </p>
 
         <p>
-          <strong>الحمام والحديث:</strong>
+          <strong>
+            الحمام والحديث:
+          </strong>
           ${hamAd}
         </p>
 
         <p>
-          <strong>القري:</strong>
+          <strong>
+            القري:
+          </strong>
           ${quraAd}
         </p>
 
         <p>
-          <strong>حصة الماء:</strong>
+          <strong>
+            حصة الماء:
+          </strong>
           ${hasWater ? "نعم" : "لا"}
         </p>
 
@@ -181,7 +273,9 @@
           hasWater
             ? `
             <p class="today-turn">
-              <strong>التقليبة:</strong>
+              <strong>
+                التقليبة:
+              </strong>
               ${waterTime}
             </p>
             `
@@ -196,11 +290,17 @@
 
     const rows = [];
 
-    const startDate = new Date();
+    const startDate =
+      new Date();
 
-    for (let i = 0; i < 90; i++) {
+    for (
+      let i = 0;
+      i < 90;
+      i++
+    ) {
 
-      const date = new Date(startDate);
+      const date =
+        new Date(startDate);
 
       date.setDate(
         startDate.getDate() + i
@@ -215,14 +315,17 @@
       let water = "لا";
       let time = "-";
 
-      if (WATER_ADS.includes(ad)) {
+      if (
+        WATER_ADS.includes(ad)
+      ) {
 
         water = "نعم";
 
-        time = getWaterTime(
-          ad,
-          date
-        );
+        time =
+          getWaterTime(
+            ad,
+            date
+          );
       }
 
       rows.push(`
@@ -255,7 +358,140 @@
     `;
   }
 
+  function showQuraToday() {
+
+    const today =
+      new Date();
+
+    const idx =
+      getCycleIndex(today);
+
+    const ad =
+      QURA_ADS[idx];
+
+    const hasWater =
+      QURA_WATER_ADS.includes(
+        ad
+      );
+
+    const time =
+      hasWater
+        ? getQuraTime(
+            ad,
+            today
+          )
+        : "-";
+
+    $("qura-next").innerHTML = `
+      <div class="next-box">
+
+        <p class="next-date">
+          ${formatDate(today)}
+        </p>
+
+        <p>
+          <strong>الآد:</strong>
+          ${ad}
+        </p>
+
+        <p>
+          <strong>حصة الماء:</strong>
+          ${hasWater ? "نعم" : "لا"}
+        </p>
+
+        ${
+          hasWater
+            ? `
+            <p class="today-turn">
+              <strong>التقليبة:</strong>
+              ${time}
+            </p>
+            `
+            : ""
+        }
+
+      </div>
+    `;
+  }
+
+  function renderQuraTable() {
+
+    const rows = [];
+
+    const startDate =
+      new Date();
+
+    for (
+      let i = 0;
+      i < 90;
+      i++
+    ) {
+
+      const date =
+        new Date(startDate);
+
+      date.setDate(
+        startDate.getDate() + i
+      );
+
+      const idx =
+        getCycleIndex(date);
+
+      const ad =
+        QURA_ADS[idx];
+
+      let water = "لا";
+      let time = "-";
+
+      if (
+        QURA_WATER_ADS.includes(
+          ad
+        )
+      ) {
+
+        water = "نعم";
+
+        time =
+          getQuraTime(
+            ad,
+            date
+          );
+      }
+
+      rows.push(`
+        <tr>
+          <td>${localDateString(date)}</td>
+          <td>${ad}</td>
+          <td>${water}</td>
+          <td>${time}</td>
+        </tr>
+      `);
+    }
+
+    $("qura-schedule").innerHTML = `
+      <table>
+
+        <thead>
+          <tr>
+            <th>التاريخ</th>
+            <th>الآد</th>
+            <th>حصة الماء</th>
+            <th>التقليبة</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          ${rows.join("")}
+        </tbody>
+
+      </table>
+    `;
+  }
+
   showTodayAds();
   renderHamTable();
+
+  showQuraToday();
+  renderQuraTable();
 
 })();
