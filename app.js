@@ -268,7 +268,7 @@ function formatTurnTime(time) {
       return "🌙 نص الليل (11:00 م)";
 
     case "الغدو":
-      return "🌤️ الغدو (5:30 ص)";
+      return "🌆 الغدو (8:00 م)";
 
     default:
       return time;
@@ -456,9 +456,17 @@ function showTodayEvents() {
   $("today-events").innerHTML = `
     <div class="events-box">
 
-      <h3>
-        📅 أفلاج اليوم
-      </h3>
+<div class="events-header">
+
+  <h3>
+    📅 أفلاج اليوم
+  </h3>
+
+  <span class="events-date">
+    ${formatDate(today)}
+  </span>
+
+</div>
 
       ${
         hamEvents.length
