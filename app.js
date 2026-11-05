@@ -506,6 +506,193 @@ function showTodayEvents() {
   `;
 }
 
+
+function showNextEvents() {
+
+  let nextHam = null;
+  let nextQura = null;
+
+  const tomorrow = new Date();
+
+  tomorrow.setDate(
+    tomorrow.getDate() + 1
+  );
+
+  for (let i = 0; i < 365; i++) {
+
+    const date = new Date(tomorrow);
+
+    date.setDate(
+      tomorrow.getDate() + i
+    );
+
+    const idx =
+      getCycleIndex(date);
+
+    /* الحمام والحديث */
+
+    const hamAd =
+      HAM_ADS[idx];
+
+    if (
+      WATER_ADS.includes(hamAd)
+    ) {
+
+      const turn =
+        getWaterTime(
+          hamAd,
+          date
+        );
+
+      if (!nextHam) {
+
+        let displayDate =
+          new Date(date);
+
+        let icon = "";
+        let clock = "";
+
+        if (turn === "الشروق") {
+
+          icon = "🌅";
+          clock = "5:30 ص";
+
+          displayDate.setDate(
+            displayDate.getDate() + 1
+          );
+
+        } else if (
+          turn === "صنهار"
+        ) {
+
+          icon = "☀️";
+          clock = "11:30 ص";
+
+        } else if (
+          turn === "الغروب"
+        ) {
+
+          icon = "🌇";
+          clock = "5:30 م";
+
+        } else if (
+          turn === "نص الليل"
+        ) {
+
+          icon = "🌙";
+          clock = "11:00 م";
+
+        }
+
+        nextHam = {
+          icon,
+          ad: hamAd,
+          turn,
+          time: clock,
+          date:
+            localDateString(
+              displayDate
+            )
+        };
+      }
+    }
+
+    /* القري */
+
+    const quraAd =
+      QURA_ADS[idx];
+
+    if (
+      QURA_WATER_ADS.includes(
+        quraAd
+      )
+    ) {
+
+      const turn =
+        getQuraTime(
+          quraAd,
+          date
+        );
+
+      if (!nextQura) {
+
+        const icon =
+          turn === "الغدو"
+            ? "🌆"
+            : "☀️";
+
+        const clock =
+          turn === "الغدو"
+            ? "8:00 م"
+            : "11:30 ص";
+
+        nextQura = {
+          icon,
+          ad: quraAd,
+          turn,
+          time: clock,
+          date:
+            localDateString(
+              date
+            )
+        };
+      }
+    }
+
+    if (
+      nextHam &&
+      nextQura
+    ) {
+      break;
+    }
+  }
+
+  $("next-events").innerHTML = `
+    <div class="next-events-box">
+
+      <div class="events-header">
+
+        <h3>
+          ⏭️ الأفلاج القادمة
+        </h3>
+
+      </div>
+
+      <div class="events-section-title">
+        الحمام والحديث
+      </div>
+
+      <div class="event-item">
+        ${nextHam.icon}
+        ${nextHam.ad}
+        -
+        ${nextHam.turn}
+        -
+        ${nextHam.time}
+        <br>
+        📅 ${nextHam.date}
+      </div>
+
+      <div class="events-section-title">
+        القري
+      </div>
+
+      <div class="event-item">
+        ${nextQura.icon}
+        ${nextQura.ad}
+        -
+        ${nextQura.turn}
+        -
+        ${nextQura.time}
+        <br>
+        📅 ${nextQura.date}
+      </div>
+
+    </div>
+  `;
+}
+
+
   function showTodayAds() {
 
     const today =
@@ -773,6 +960,8 @@ function showTodayEvents() {
   }
 
 showTodayEvents();
+
+showNextEvents();
 
 showTodayAds();
 
