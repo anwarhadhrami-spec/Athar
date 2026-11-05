@@ -268,11 +268,234 @@ function formatTurnTime(time) {
       return "🌙 نص الليل (11:00 م)";
 
     case "الغدو":
-      return "🌆 الغدو (8:00 م)";
+      return "🌤️ الغدو (5:30 ص)";
 
     default:
       return time;
   }
+}
+
+function showTodayEvents() {
+
+  const today = new Date();
+
+  const events = [];
+
+  /* شروق قادم من الأمس */
+
+  const yesterday =
+    new Date(today);
+
+  yesterday.setDate(
+    yesterday.getDate() - 1
+  );
+
+  const yesterdayIdx =
+    getCycleIndex(yesterday);
+
+  const yesterdayAd =
+    HAM_ADS[yesterdayIdx];
+
+  if (
+    WATER_ADS.includes(
+      yesterdayAd
+    )
+  ) {
+
+    const yesterdayTurn =
+      getWaterTime(
+        yesterdayAd,
+        yesterday
+      );
+
+    if (
+      yesterdayTurn ===
+      "الشروق"
+    ) {
+
+      events.push({
+        type: "ham",
+        order: 1,
+        text:
+          "🌅 " +
+          yesterdayAd +
+          " - الشروق - 5:30 ص"
+      });
+
+    }
+  }
+
+  /* الحمام والحديث */
+
+  const idx =
+    getCycleIndex(today);
+
+  const hamAd =
+    HAM_ADS[idx];
+
+  if (
+    WATER_ADS.includes(
+      hamAd
+    )
+  ) {
+
+    const hamTurn =
+      getWaterTime(
+        hamAd,
+        today
+      );
+
+    if (
+      hamTurn === "صنهار"
+    ) {
+
+      events.push({
+        type: "ham",
+        order: 2,
+        text:
+          "☀️ " +
+          hamAd +
+          " - الصنهار - 11:30 ص"
+      });
+
+    } else if (
+      hamTurn === "الغروب"
+    ) {
+
+      events.push({
+        type: "ham",
+        order: 3,
+        text:
+          "🌇 " +
+          hamAd +
+          " - الغروب - 5:30 م"
+      });
+
+    } else if (
+      hamTurn === "نص الليل"
+    ) {
+
+      events.push({
+        type: "ham",
+        order: 5,
+        text:
+          "🌙 " +
+          hamAd +
+          " - نص الليل - 11:00 م"
+      });
+
+    }
+  }
+
+  /* القري */
+
+  const quraAd =
+    QURA_ADS[idx];
+
+  if (
+    QURA_WATER_ADS.includes(
+      quraAd
+    )
+  ) {
+
+    const quraTurn =
+      getQuraTime(
+        quraAd,
+        today
+      );
+
+    if (
+      quraTurn === "صنهار"
+    ) {
+
+      events.push({
+        type: "qura",
+        order: 2,
+        text:
+          "☀️ " +
+          quraAd +
+          " - الصنهار - 11:30 ص"
+      });
+
+    } else if (
+      quraTurn === "الغدو"
+    ) {
+
+      events.push({
+        type: "qura",
+        order: 4,
+        text:
+          "🌆 " +
+          quraAd +
+          " - الغدو - 8:00 م"
+      });
+
+    }
+  }
+
+  const hamEvents =
+    events.filter(
+      e => e.type === "ham"
+    );
+
+  const quraEvents =
+    events.filter(
+      e => e.type === "qura"
+    );
+
+  if (
+    events.length === 0
+  ) {
+
+    $("today-events").innerHTML =
+      "";
+
+    return;
+  }
+
+  $("today-events").innerHTML = `
+    <div class="events-box">
+
+      <h3>
+        📅 أفلاج اليوم
+      </h3>
+
+      ${
+        hamEvents.length
+          ? `
+          <div class="events-section-title">
+            الحمام والحديث
+          </div>
+
+          ${hamEvents
+            .map(
+              e =>
+                `<div class="event-item">${e.text}</div>`
+            )
+            .join("")}
+          `
+          : ""
+      }
+
+      ${
+        quraEvents.length
+          ? `
+          <div class="events-section-title">
+            القري
+          </div>
+
+          ${quraEvents
+            .map(
+              e =>
+                `<div class="event-item">${e.text}</div>`
+            )
+            .join("")}
+          `
+          : ""
+      }
+
+    </div>
+  `;
 }
 
   function showTodayAds() {
@@ -541,12 +764,14 @@ function formatTurnTime(time) {
     `;
   }
 
-  showTodayAds();
+showTodayEvents();
 
-  renderHamTable();
+showTodayAds();
 
-  showQuraToday();
+renderHamTable();
 
-  renderQuraTable();
+showQuraToday();
+
+renderQuraTable();
 
 })();
