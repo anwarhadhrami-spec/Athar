@@ -70,3 +70,61 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+.events-box{
+  margin-bottom:16px;
+  padding:16px;
+  background:linear-gradient(
+    135deg,
+    #fff7e0 0%,
+    #ffe9b1 100%
+  );
+  border:2px solid #f2c14e;
+  border-radius:18px;
+  box-shadow:0 4px 15px rgba(171,120,0,.12);
+}
+
+.events-box h3{
+  margin:0 0 12px;
+  color:#8a5a00;
+  font-size:1.15rem;
+  font-weight:800;
+}
+
+.events-box ul{
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+
+.events-box li{
+  background:#ffffffcc;
+  border:1px solid #f3d57a;
+  border-radius:12px;
+  padding:10px 12px;
+  margin-bottom:8px;
+  color:#624300;
+  font-weight:700;
+}
+
+.events-box li:last-child{
+  margin-bottom:0;
+}
+
+.events-section-title{
+  color:#8a5a00;
+  font-size:1rem;
+  font-weight:800;
+  margin:16px 0 8px;
+}
+
+.event-item{
+  background:#fffdf7;
+  border:1px solid #f0cf69;
+  border-radius:14px;
+  padding:12px 14px;
+  margin-bottom:10px;
+  font-weight:700;
+  color:#6d4b00;
+}
